@@ -3,6 +3,11 @@ class Speaker extends Thread{
 
     public Speaker(Museum m){
         this.museum = m;
+        this.setName("Speaker");
+    }
+
+    public void msg(String m) {
+        System.out.println("["+(System.currentTimeMillis()-time)+"] "+getName()+": "+m);
     }
 
     public void run(){
@@ -17,4 +22,5 @@ class Speaker extends Thread{
             while(museum.theater.getNumOfOccupants() > 0){};
         }
     }
+
 }

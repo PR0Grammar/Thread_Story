@@ -5,10 +5,10 @@ class Museum{
     ArrayList<Visitor> visitors;
     Theater theater;
 
-    public Museum(int theaterCapacity, long theaterSessionLength){
+    public Museum(int theaterCapacity){
         this.isOpen = false;
         this.visitors = new ArrayList<>();
-        this.theater = new Theater(theaterCapacity, theaterSessionLength);
+        this.theater = new Theater(theaterCapacity);
     }
 
     synchronized boolean isOpen(){
@@ -28,7 +28,7 @@ class Museum{
         visitors.add(v);
     }
 
-    synchronized int getVisitorCount(){
+    synchronized int visitorCount(){
         return this.visitors.size();
     }
 }

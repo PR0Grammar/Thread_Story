@@ -20,46 +20,40 @@ class Visitor extends Thread{
 
     public void run(){      
       while(!hasSeenPresentation && museum.isOpen()){
-        while(museum.theater.theaterInSession() || !museum.theater.isEmpty()){}; //Busy wait
+        while(museum.theater.inSession() || museum.theater.theaterFilled()){}; //Busy wait
 
-        if(!museum.isOpen()){
-            continue;
-        }
-                
+        if(!museum.isOpen()){ continue; };
+
         this.setPriority(Thread.MAX_PRIORITY);
+        
+        this.msg("has entered the theater!");
         museum.theater.enterTheater();
-        this.msg("has entered the theater");
 
         try{
-            Thread.sleep(12);
+            Thread.sleep(300);
+            this.setPriority(Thread.NORM_PRIORITY);
         }catch(InterruptedException e){
-
+            this.msg("has been interrupted");
         }
 
-        this.setPriority(Thread.NORM_PRIORITY);
+        if(museum.theater.fillSeat(this)){
+            this.msg("got a seat for the presentation!");
 
-        if(museum.theater.grabSeat(this)){
-            this.msg("got a seat!");
             this.hasSeenPresentation = true;
             try{
                 Thread.sleep(Long.MAX_VALUE);
             }catch(InterruptedException e){
-
+                this.msg("has woken up!");
             }
-            //Group, etc
-            //Ticket,etc
-            //Busy/wait till session ends
-            while(museum.theater.theaterInSession()){};
-            //Empty out
+
+            this.msg("has left the theater after the presentation");            
             museum.theater.leaveTheater(this);
-            this.msg("has left the theater after its viewing");
         }
         else{
             Thread.yield();
             Thread.yield();
-            this.msg("didn't get a seat, so they left the theater.");
+            this.msg("has left the theater to wait for next viewing");
             museum.theater.leaveTheater(this);
-            continue;
         }
 
       }
