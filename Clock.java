@@ -26,7 +26,7 @@ class Clock extends Thread{
             museum.theater.startSession();
 
             try{
-                Thread.sleep(4000);
+                Thread.sleep(this.movieSessionLength);
             }catch(InterruptedException e){
                 this.msg("Wake up visitors!"); //Change to speaker
             }
