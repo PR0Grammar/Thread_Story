@@ -31,9 +31,11 @@ class Speaker extends Thread{
             }
 
             this.msg("Done distributing tickets to all groups. Feel free to leave whenever!");
+
             //Wait till session is finally over
             while(museum.theater.inSession()){};
         }
+        this.msg("I'm done for the day. Heading home.");
     }
 
 }

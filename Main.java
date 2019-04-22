@@ -1,8 +1,8 @@
 class Main{
 
     public static void main(String[] args){
+        int numVisitors = Integer.parseInt(args[0]);
         int theaterCap = 5;
-        int numVisitors = 23;
         int partyTicketSize = 3;
 
         Museum m = new Museum(theaterCap, partyTicketSize);

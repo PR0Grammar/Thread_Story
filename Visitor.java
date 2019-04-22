@@ -35,11 +35,12 @@ class Visitor extends Thread{
         //Simulate rushing in for seats!
         this.setPriority(Thread.MAX_PRIORITY);
 
-        this.msg("has entered the theater!");
         museum.theater.enterTheater();
+        this.msg("has entered the theater!");
 
+        //Reset priority
         try{
-            Thread.sleep((long) Math.random() * 5000);
+            Thread.sleep((long) (Math.random() * 10000));
             this.setPriority(Thread.NORM_PRIORITY);
         }catch(InterruptedException e){
             this.msg("has been interrupted!");
@@ -57,16 +58,16 @@ class Visitor extends Thread{
             }
 
             //Join a ticket group
-            this.msg("is join a group!");
+            this.msg("is joining a group!");
             museum.theater.groupVisitor(this);
 
             //Wait for group to be called by speaker to get party ticket
-            while(!this.hasPartyTicket){/** */}
+            while(!this.hasPartyTicket){ Thread.yield();}
 
             //Browse around for a while before leaving, through sleep
             this.msg("is browsing around.");
             try{
-                Thread.sleep((long) Math.random() * 6000);
+                Thread.sleep((long) Math.random() * 10000);
             }catch(InterruptedException e){
                 this.msg("has been interrupted!");
             }
