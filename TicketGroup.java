@@ -1,21 +1,27 @@
-import java.util.*;
-
-// TODO:
 class TicketGroup{
-    int partyTicketSize;
-    ArrayList<ArrayList<Visitor>> groups;
-    int numOfVisitorsGrouped;
+    private int capacity;
+    private Visitor[] groupMembers;
+    int numOfMembers;
 
-    public TicketGroup(int partyTicketSize){
-        this.partyTicketSize = partyTicketSize;
-        this.groups = new ArrayList<ArrayList<Visitor>>();
-        this.numOfVisitorsGrouped = 0;
+    public TicketGroup(int capacity){
+        this.capacity = capacity;
+        this.groupMembers = new Visitor[capacity];
+        this.numOfMembers = 0;
     }
 
-    synchronized int groupVisitor(Visitor v){
-        if(this.groups.size() < 0){
-            this.groups.add(new ArrayList<Visitor>());
-        }
-        this.numOfVisitorsGrouped++;
+    synchronized void addMember(Visitor v){
+        this.groupMembers[numOfMembers++] = v; 
+    }
+
+    synchronized boolean isFull(){
+        return this.numOfMembers == this.capacity;
+    }
+
+    synchronized Visitor[] getMembers(){
+        return this.groupMembers;
+    }
+
+    synchronized Visitor getMember(int i){
+        return this.groupMembers[i];
     }
 }

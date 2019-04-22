@@ -1,14 +1,16 @@
 
 class Visitor extends Thread{
     private boolean hasSeenPresentation;
+    private boolean hasPartyTicket;
     private int visitorId;
     Museum museum;
-    public static long time = System.currentTimeMillis();
+    private static long time = System.currentTimeMillis();
 
 
     public Visitor(int visitorId, Museum m){
         this.hasSeenPresentation = false;
         this.visitorId = visitorId;
+        this.hasPartyTicket = false;
         this.museum = m;
 
         this.setName("Visitor-" + visitorId);
@@ -16,6 +18,10 @@ class Visitor extends Thread{
 
     public void msg(String m) {
         System.out.println("["+(System.currentTimeMillis()-time)+"] "+getName()+": "+m);
+    }
+
+    public void handPartyTicket(){
+        this.hasPartyTicket = true;
     }
 
     public void run(){      
@@ -29,11 +35,12 @@ class Visitor extends Thread{
         //Simulate rushing in for seats!
         this.setPriority(Thread.MAX_PRIORITY);
 
-        this.msg("has entered the theater!");
         museum.theater.enterTheater();
+        this.msg("has entered the theater!");
 
+        //Reset priority
         try{
-            Thread.sleep(300);
+            Thread.sleep((long) (Math.random() * 10000));
             this.setPriority(Thread.NORM_PRIORITY);
         }catch(InterruptedException e){
             this.msg("has been interrupted!");
@@ -48,6 +55,21 @@ class Visitor extends Thread{
                 Thread.sleep(Long.MAX_VALUE);
             }catch(InterruptedException e){
                 this.msg("has woken up!");
+            }
+
+            //Join a ticket group
+            this.msg("is joining a group!");
+            museum.theater.groupVisitor(this);
+
+            //Wait for group to be called by speaker to get party ticket
+            while(!this.hasPartyTicket){ Thread.yield();}
+
+            //Browse around for a while before leaving, through sleep
+            this.msg("is browsing around.");
+            try{
+                Thread.sleep((long) Math.random() * 10000);
+            }catch(InterruptedException e){
+                this.msg("has been interrupted!");
             }
 
             //Visitors with smaller id leave first

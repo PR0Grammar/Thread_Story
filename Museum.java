@@ -5,10 +5,10 @@ class Museum{
     ArrayList<Visitor> visitors;
     Theater theater;
 
-    public Museum(int theaterCapacity){
+    public Museum(int theaterCapacity, int theaterPartyTicketSize){
         this.isOpen = false;
         this.visitors = new ArrayList<>();
-        this.theater = new Theater(theaterCapacity);
+        this.theater = new Theater(theaterCapacity, theaterPartyTicketSize);
     }
 
     synchronized boolean isOpen(){

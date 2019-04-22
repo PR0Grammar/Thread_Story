@@ -2,7 +2,7 @@
 class Clock extends Thread{
     Museum museum;
     long movieSessionLength;
-    static long time = System.currentTimeMillis();
+    private static long time = System.currentTimeMillis();
 
     public Clock(Museum m, long movieSessionLength){
         this.museum = m;
@@ -22,18 +22,19 @@ class Clock extends Thread{
                   museum.visitorCount() != museum.theater.numOfTotalViewers()) || 
                   museum.theater.overcrowded()
                   ){}
-            this.msg("Next theater session started!");
+            this.msg("Next theater session started and movie has started!");
             museum.theater.startSession();
 
+            //Sleep for the length of the movie, then "wake up" the speaker
             try{
                 Thread.sleep(this.movieSessionLength);
             }catch(InterruptedException e){
-                this.msg("Wake up visitors!"); //Change to speaker
+                this.msg("has been interrupted!");
             }
+            
+            this.msg("Movie portion of presentation has ended.");
+            museum.theater.endMovie();
 
-            for(Visitor v: museum.theater.viewers){
-                v.interrupt();
-            }
             while(museum.theater.numOfOccupants() > 0){}
 
             if(museum.theater.sessionCount == 4){
@@ -45,5 +46,6 @@ class Clock extends Thread{
                 museum.theater.endSession();
             }        
         }
+        this.msg("Clock has terminated!");
     }
 }
