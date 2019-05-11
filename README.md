@@ -10,4 +10,4 @@ By default, only 4 movies shown in the day, and the museum closes at the end of 
 ## To run:
 
 
-`javac Main.java && java Main`
+`javac Main.java && java Main <integer value for number of visitors>`
